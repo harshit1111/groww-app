@@ -1,0 +1,24 @@
+.sideBar{
+    margin: 0;
+    min-height: 100vh;
+    height: 100%;
+    background: #333;
+    padding: 0;
+}
+
+.sideBar ul{
+    padding: 0;
+}
+
+.sideBar li{
+    list-style: none;
+    padding: 10px 15px;
+    border-bottom: 1px solid white;
+}
+
+.sideBar a{
+    list-style: none;
+    color: white;
+    text-decoration: none;
+    
+}
