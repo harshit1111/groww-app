@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/groww-app/static/css/main.3d53d19d.chunk.css",
-    "main.js": "/groww-app/static/js/main.869e09ba.chunk.js",
-    "main.js.map": "/groww-app/static/js/main.869e09ba.chunk.js.map",
+    "main.css": "/groww-app/static/css/main.068ae4c8.chunk.css",
+    "main.js": "/groww-app/static/js/main.2a10b4e0.chunk.js",
+    "main.js.map": "/groww-app/static/js/main.2a10b4e0.chunk.js.map",
     "runtime-main.js": "/groww-app/static/js/runtime-main.ad9e7575.js",
     "runtime-main.js.map": "/groww-app/static/js/runtime-main.ad9e7575.js.map",
     "static/css/2.818011ed.chunk.css": "/groww-app/static/css/2.818011ed.chunk.css",
@@ -10,14 +10,14 @@
     "static/js/2.63000e1f.chunk.js.map": "/groww-app/static/js/2.63000e1f.chunk.js.map",
     "index.html": "/groww-app/index.html",
     "static/css/2.818011ed.chunk.css.map": "/groww-app/static/css/2.818011ed.chunk.css.map",
-    "static/css/main.3d53d19d.chunk.css.map": "/groww-app/static/css/main.3d53d19d.chunk.css.map",
+    "static/css/main.068ae4c8.chunk.css.map": "/groww-app/static/css/main.068ae4c8.chunk.css.map",
     "static/js/2.63000e1f.chunk.js.LICENSE.txt": "/groww-app/static/js/2.63000e1f.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.ad9e7575.js",
     "static/css/2.818011ed.chunk.css",
     "static/js/2.63000e1f.chunk.js",
-    "static/css/main.3d53d19d.chunk.css",
-    "static/js/main.869e09ba.chunk.js"
+    "static/css/main.068ae4c8.chunk.css",
+    "static/js/main.2a10b4e0.chunk.js"
   ]
 }
