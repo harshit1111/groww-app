@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/groww-app/static/css/main.94e7dd84.chunk.css",
-    "main.js": "/groww-app/static/js/main.b8774435.chunk.js",
-    "main.js.map": "/groww-app/static/js/main.b8774435.chunk.js.map",
+    "main.css": "/groww-app/static/css/main.7e9e6e84.chunk.css",
+    "main.js": "/groww-app/static/js/main.4fe81f44.chunk.js",
+    "main.js.map": "/groww-app/static/js/main.4fe81f44.chunk.js.map",
     "runtime-main.js": "/groww-app/static/js/runtime-main.ad9e7575.js",
     "runtime-main.js.map": "/groww-app/static/js/runtime-main.ad9e7575.js.map",
     "static/css/2.818011ed.chunk.css": "/groww-app/static/css/2.818011ed.chunk.css",
-    "static/js/2.d34b7f7d.chunk.js": "/groww-app/static/js/2.d34b7f7d.chunk.js",
-    "static/js/2.d34b7f7d.chunk.js.map": "/groww-app/static/js/2.d34b7f7d.chunk.js.map",
+    "static/js/2.6b42a056.chunk.js": "/groww-app/static/js/2.6b42a056.chunk.js",
+    "static/js/2.6b42a056.chunk.js.map": "/groww-app/static/js/2.6b42a056.chunk.js.map",
     "index.html": "/groww-app/index.html",
     "static/css/2.818011ed.chunk.css.map": "/groww-app/static/css/2.818011ed.chunk.css.map",
-    "static/css/main.94e7dd84.chunk.css.map": "/groww-app/static/css/main.94e7dd84.chunk.css.map",
-    "static/js/2.d34b7f7d.chunk.js.LICENSE.txt": "/groww-app/static/js/2.d34b7f7d.chunk.js.LICENSE.txt"
+    "static/css/main.7e9e6e84.chunk.css.map": "/groww-app/static/css/main.7e9e6e84.chunk.css.map",
+    "static/js/2.6b42a056.chunk.js.LICENSE.txt": "/groww-app/static/js/2.6b42a056.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.ad9e7575.js",
     "static/css/2.818011ed.chunk.css",
-    "static/js/2.d34b7f7d.chunk.js",
-    "static/css/main.94e7dd84.chunk.css",
-    "static/js/main.b8774435.chunk.js"
+    "static/js/2.6b42a056.chunk.js",
+    "static/css/main.7e9e6e84.chunk.css",
+    "static/js/main.4fe81f44.chunk.js"
   ]
 }
