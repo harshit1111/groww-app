@@ -4,5 +4,6 @@ html,body{
   }
 
   body{
-    background: #eee !important;
+    color: #44475b;
+    background: #44475b !important;
   }

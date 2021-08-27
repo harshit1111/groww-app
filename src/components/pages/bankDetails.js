@@ -1,36 +1,18 @@
 
 import {useEffect , useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import Loader from '../Loader/loader'
+
+let cities = ["mumbai","delhi","pune"]
 
 function BankDetails(props){
 
-    const [allBanks, setAllBanks] = useState([])
     const [selectedBankIfsc ,setSelectedBankIfsc] = useState();
     const [selectedBank,setSelectedBank] = useState({});
     const [loading,setLoading] = useState(false)
-    
-    const history = useHistory()
+    const history = useHistory();
 
-
-    useEffect(() => {
-        let data = localStorage.getItem('banks');
-        if(data){
-            data = JSON.parse(data);
-            setAllBanks(data)
-
-        }else{
-            fetch()
-            .then(res => {
-                return res.json();
-            })
-            .then(res => {
-                setAllBanks(res);
-            })
-            .catch((err) => {
-                console.log("something went wrong")
-            })
-        }   
-    },[])
+   
 
     useEffect(() => {
         const temp = history.location.pathname.split('/')
@@ -40,13 +22,40 @@ function BankDetails(props){
     },[history])
 
     useEffect(() => {
-        const selectedBank = allBanks.find((bank) => {
-            return bank.ifsc === selectedBankIfsc
-        })
+        
+        let selectedBank = null;
+        console.log(selectedBankIfsc)
 
+        setLoading(true)
+
+        if(history.location.state){
+            let city = history.location.state;
+            let cityData = JSON.parse(localStorage.getItem(city));
+            if(cityData){
+                console.log(cityData)
+                selectedBank = cityData.banks.find((bank) => {
+                    return bank.ifsc === selectedBankIfsc
+                })
+            }
+            
+        }else{
+            
+            for(let i = 0; i <cities.length ; i++){
+                let cityData = JSON.parse(localStorage.getItem(cities[i]));
+                if(cityData){
+                    selectedBank = cityData.banks.find((bank) => {
+                        console.log(bank.ifsc == selectedBankIfsc)
+                        return bank.ifsc == selectedBankIfsc
+                    })
+                }
+
+                if(selectedBank) break;
+            }
+        }
         
         if(selectedBank) setSelectedBank(selectedBank);
         console.log(selectedBank)
+        setLoading(false)
     },[selectedBankIfsc])
 
    
@@ -59,19 +68,30 @@ function BankDetails(props){
 
             </div>
             <div className="row">
-                {Object.keys(selectedBank).length == 0 ? <h2>NO BANK FOUND</h2>: null}
+                {loading ? <div className="text-center"><Loader /></div> : null}
+                {Object.keys(selectedBank).length == 0 && !loading ? <h2>NO BANK FOUND</h2>: null}
+                <tbody>
                 {Object.keys(selectedBank).map(ele => {
                     return(
                         <>
-                        <div className="col-6">
+                        <tr>
+                            <td>
+                                {ele}
+                            </td>
+                            <td>
+                            {selectedBank[ele]}
+                            </td>
+                        </tr>
+                        {/* <div className="col-6">
                             {ele}
                         </div>
                         <div className="col-6">
                             {selectedBank[ele]}
-                        </div>
+                        </div> */}
                         </>
                     )
                 })}
+                </tbody>
             </div>
             
         </div>

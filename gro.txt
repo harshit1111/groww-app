@@ -1,0 +1,65 @@
+ //useEffect(() => {
+
+        
+        /* let city = history.location.state;
+        if(city){
+            let data = localStorage.getItem(city);
+            
+            if(data){
+                
+            }else{
+                fetch(`https://vast-shore-74260.herokuapp.com/banks?${city}`)
+                .then(res => {
+                    return res.json();
+                })
+                .then(banks => {
+
+                })
+            }
+        }else{
+            cities.map(city => {
+                let currentData = localStorage.getItem(city)
+                console.log(currentData);
+                if(currentData){
+                    let requiredBank = null;
+
+                }
+            })
+           
+        }    
+    
+        let data = localStorage.getItem(history.location.state);
+        if(data){
+         
+            data = JSON.parse(data);
+            if(data.expiry > Date.now()){
+                setAllBanks(data.banks)
+                return;
+            }else  localStorage.clear();
+
+           
+        }
+     
+        
+            setLoading(true)
+            fetch("https://vast-shore-74260.herokuapp.com/banks?city=MUMBAI")
+            .then(res => {
+                return res.json();
+            })
+            .then(res => {
+                const localStorageData = {
+                    expiry : Date.now() + 1000*60*60*24*3,
+                    banks : res
+                }
+
+                localStorage.setItem('data',JSON.stringify(localStorageData));
+                setAllBanks(res);
+                setLoading(false)
+
+            })
+            .catch((err) => {
+                setLoading(false)
+                console.log("something went wrong")
+            })
+        }   
+    ,[]) */
