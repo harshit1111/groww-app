@@ -1,143 +1,130 @@
+import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import Loader from "../Loader/loader";
+import NotFound from "./notfound";
 
-import {useEffect , useState } from 'react'
-import { useHistory } from 'react-router-dom'
-import Loader from '../Loader/loader'
-import NotFound from './notfound'
-
-let cities = ["mumbai","delhi","pune"]
+let cities = ["mumbai", "delhi", "pune"];
 
 const objectMapping = {
-    bank_id : "BANK ID",
-    bank_name : "BANK NAME",
-    branch : "BRANCH",
-    ifsc : "IFSC",
-    address : "ADDRESS",
-    city : "CITY",
-    district : "DISTRICT",
-    state : "STATE"
+  bank_id: "BANK ID",
+  bank_name: "BANK NAME",
+  branch: "BRANCH",
+  ifsc: "IFSC",
+  address: "ADDRESS",
+  city: "CITY",
+  district: "DISTRICT",
+  state: "STATE"
+};
 
-}
+function BankDetails() {
+  const [selectedBankIfsc, setSelectedBankIfsc] = useState();
+  const [selectedBank, setSelectedBank] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [notFound, setNoFound] = useState(false);
+  const history = useHistory();
 
-function BankDetails(){
+  useEffect(() => {
+    const temp = history.location.pathname.split("/");
+    const selectedBankIfsc = temp[temp.length - 1];
+    console.log(selectedBankIfsc);
+    setSelectedBankIfsc(selectedBankIfsc);
+  }, [history]);
 
-    const [selectedBankIfsc ,setSelectedBankIfsc] = useState();
-    const [selectedBank,setSelectedBank] = useState({});
-    const [loading,setLoading] = useState(false)
-    const [notFound , setNoFound] = useState(false);
-    const history = useHistory();
+  useEffect(() => {
+    let selectedBank = null;
 
-   
+    setLoading(true);
+    setNoFound(false);
 
-    useEffect(() => {
-        const temp = history.location.pathname.split('/')
-        const selectedBankIfsc = temp[temp.length - 1];
-        console.log(selectedBankIfsc);
-        setSelectedBankIfsc(selectedBankIfsc);
-    },[history])
+    if (history.location.state) {
+      let city = history.location.state;
+      let cityData = JSON.parse(localStorage.getItem(city));
 
-    useEffect(() => {
-        
-        let selectedBank = null;
+      if (cityData) {
+        if (cityData.expiry > Date.now()) {
+          selectedBank = cityData.banks.find(bank => {
+            return bank.ifsc === selectedBankIfsc;
+          });
+        } else {
+          setLoading(true);
+          localStorage.removeItem(city);
+          fetch(
+            `https://vast-shore-74260.herokuapp.com/banks?city=${city.toUpperCase()}`
+          )
+            .then(res => {
+              return res.json();
+            })
+            .then(banks => {
+              const expiryTime = Date.now() + 1000 * 60 * 60 * 24 * 3;
 
-        setLoading(true)
-        setNoFound(false)
+              const localStorageData = {
+                banks: banks,
+                expiry: expiryTime
+              };
 
-        console.log(history.location.state)
-        if(history.location.state){
-            let city = history.location.state;
-            let cityData = JSON.parse(localStorage.getItem(city));
+              selectedBank = banks.find(bank => {
+                return bank.ifsc === selectedBankIfsc;
+              });
 
-            if(cityData){
-                if(cityData.expiry > Date.now()){
-                    selectedBank = cityData.banks.find((bank) => {
-                        return bank.ifsc === selectedBankIfsc
-                    })
-                }else{
-                    setLoading(true)
-                    localStorage.removeItem(city);
-                    fetch(`https://vast-shore-74260.herokuapp.com/banks?city=${city.toUpperCase()}`)
-                    .then(res => {
-                        return res.json();
-                    })
-                    .then(banks => {
-                        const expiryTime = Date.now();
-                        
-                        const localStorageData = {
-                          banks: banks,
-                          expiry: expiryTime
-                        };
-                        
-                        selectedBank = banks.find((bank) => {
-                            console.log(bank , selectedBankIfsc)
-                            console.log(bank.ifsc === selectedBankIfsc)
-                            return bank.ifsc === selectedBankIfsc
-                        })
-                        
-                        console.log(selectedBank)
-                        if(selectedBank) setSelectedBank(selectedBank)
-                        setLoading(false)
+    
+              if (selectedBank) setSelectedBank(selectedBank);
+              setLoading(false);
 
-                        localStorage.setItem(`${city}`, JSON.stringify(localStorageData));
-                    })
-                }
-               
-            }
-            
-        }else{
-            
-            for(let i = 0; i <cities.length ; i++){
-                let cityData = JSON.parse(localStorage.getItem(cities[i]));
-                console.log(cityData)
-                if(cityData){
-                    selectedBank = cityData.banks.find((bank) => {
-                        console.log(bank.ifsc == selectedBankIfsc)
-                        return bank.ifsc == selectedBankIfsc
-                    })
-                }
-
-                if(selectedBank) break;
-            }
+              localStorage.setItem(`${city}`, JSON.stringify(localStorageData));
+            });
         }
-        
+      }
+    } else {
+      for (let i = 0; i < cities.length; i++) {
+        let cityData = JSON.parse(localStorage.getItem(cities[i]));
+        if (cityData) {
+          selectedBank = cityData.banks.find(bank => {
+            return bank.ifsc == selectedBankIfsc;
+          });
+        }
 
-        console.log(selectedBank)
-        if(selectedBank) setSelectedBank(selectedBank);
-        else setNoFound(true)
-        setLoading(false)
-    },[selectedBankIfsc])
+        if (selectedBank) break;
+      }
+    }
+    
+    if (selectedBank) setSelectedBank(selectedBank);
+    else setNoFound(true);
+    setLoading(false);
+  }, [selectedBankIfsc]);
 
-   
-    return(
-        <div className="container_fluid">
-            <div className="row">
-                <div className="col-12">
-                    <h3 className="p-3" style={{background:"#ddd",border:"1px solid #ddd",textAlign:"left"}}>Selected Bank details</h3>
-                </div>
-
-            </div>
-            <div className="row">
-                {loading ? <div className="text-center"><Loader /></div> : null}
-                {Object.keys(selectedBank).length == 0 && notFound ? <NotFound />: null}
-                <tbody>
-                {Object.keys(selectedBank).map(ele => {
-                    return(
-                        <>
-                        <tr>
-                            <td>
-                                {objectMapping[ele]}
-                            </td>
-                            <td>
-                                {selectedBank[ele]}
-                            </td>
-                        </tr>
-                        </>
-                    )
-                })}
-                </tbody>
-            </div>
-            
+  return (
+    <div className="container_fluid">
+      <div className="row">
+        <div className="col-12">
+          <h3 className="p-3" style={{background: "#ddd",border: "1px solid #ddd",textAlign: "left"}}>
+            Selected Bank details
+          </h3>
         </div>
-    )
+      </div>
+      <div className="row">
+        {loading ? (
+          <div className="text-center">
+            <Loader />
+          </div>
+        ) : null}
+        {Object.keys(selectedBank).length == 0 && notFound ? (
+          <NotFound />
+        ) : null}
+        <table>
+        <tbody>
+          {Object.keys(selectedBank).map((ele,ind) => {
+            return (
+                <tr key={ind}>
+                  <td>{objectMapping[ele]}</td>
+                  <td>{selectedBank[ele]}</td>
+                </tr>
+            );
+          })}
+        </tbody>
+        </table>
+      </div>
+    </div>
+  );
 }
 
-export default BankDetails
+export default BankDetails;

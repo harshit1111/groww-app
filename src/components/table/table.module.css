@@ -12,6 +12,7 @@
     overflow: hidden;
 }
 
+
 .table th , .table td{
     border: 1px solid #ddd;
     padding : 10px;
@@ -26,5 +27,6 @@
 
   .table tr:hover{
       background: #4CAF50;
+      cursor: pointer;
       color: white;
   }

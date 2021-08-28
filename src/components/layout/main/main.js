@@ -11,10 +11,7 @@ function MainView(){
       <Route path="/"  exact>
         <Provider store={store}>
             <AllBanks />
-        </Provider>
-            
-      
-          
+        </Provider>   
       </Route>
       <Route path="/bank-details/:ifsc"  exact>
           <BankDetails />

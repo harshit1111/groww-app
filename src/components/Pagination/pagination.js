@@ -5,10 +5,6 @@ function Pagination(props){
     const currentPageNumber = props.currentPageNumber;
     const totalPages = props.totalPages;
 
-    console.log(currentPageNumber)
-
-
-
     return(
         <div className={`${classes.pagination} mt-3 d-flex justify-content-center flex-column align-items-center`}>
             <div>

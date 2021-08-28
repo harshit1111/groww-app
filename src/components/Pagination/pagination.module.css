@@ -9,8 +9,11 @@
 }
 
 .pagination{
-  /*   position: fixed;
+    background: #fff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    position: fixed;
     z-index: 100;
     bottom: 5px;
     right : 5px;
-} */}
+}

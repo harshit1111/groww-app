@@ -1,4 +1,4 @@
-import {createStore, bindActionCreators} from 'redux'
+import {createStore} from 'redux'
 
 const cityReducer = (state = {city:"mumbai"},action) => {
     if(action.type == 'change'){

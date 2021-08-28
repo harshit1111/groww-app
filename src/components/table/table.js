@@ -6,9 +6,11 @@ function table (props) {
         <table className={classes.table}>
           <thead>
             <tr>
-            {props.headers.map(header => {
+            <th width="5%">#</th>
+            {props.headers.map((header,i) => {
+                    
                 return(
-                    <th width={header.width}>{header.content}</th>
+                    <th key={i} width={header.width}>{header.content}</th>
                 )
 
             })}
@@ -16,13 +18,14 @@ function table (props) {
           </thead>
 
           <tbody>
-            {props.currentPageBanks.map((bank, id) => {
+            {props.currentPageBanks.map((bank, index) => {
               return (
                 <tr
                   className={classes.row}
-                  key={id}
+                  key={index}
                   onClick={() => props.fullDetailsHandler(bank.ifsc)}
                 >
+                    <td>{props.pageNumber*10 + index+1}</td>
                   <td>{bank.bank_id}</td>
                   <td> {bank.bank_name}</td>
                   <td>{bank.ifsc}</td>

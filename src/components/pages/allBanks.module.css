@@ -7,24 +7,6 @@
     background: #E7E9EB
 } 
 
-.table{
-    height: 80px;
-    width: 100%;
-}
-
-.table td { overflow: hidden; }
-
-.table tr{
-    padding: 10px;
-    font-size: 14px;
-    height: 20px;
-    overflow: hidden;
-}
-
-.table th , .table td{
-    border: 1px solid #ddd;
-    padding : 10px;
-}
 
 .dropdown{
     display: flex;
@@ -53,18 +35,3 @@
 
 
   
-  .row:hover{
-      cursor: pointer;
-      transition: all .1s;
-  }
-  th, td {
-    padding: 15px;
-    text-align: left;
-  }
-
-  tr:nth-child(even) {background-color: #E7E9EB;}
-
-  .table tr:hover{
-      background: #4CAF50;
-      color: white;
-  }

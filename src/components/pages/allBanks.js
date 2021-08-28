@@ -12,7 +12,7 @@ const cities = [
   { name: "mumbai", value: "mumbai" },
   { name: "delhi", value: "delhi" },
   { name: "pune", value: "pune" },
-  { name: "bengalore", value: "bengalore" },
+  { name: "kolkata", value: "kolkata" },
   { name: "chennai", value: "chennai" }
 ];
 const categories = [
@@ -43,6 +43,7 @@ function AllBanks() {
   const [pagePerEntries, setPagePerEntries] = useState(10);
   const [totalPages, setTotalPages] = useState();
   const [isError, setIsError] = useState(false);
+  const [displayToastify , setDisplayToastify] = useState(false)
 
   const history = useHistory();
 
@@ -57,12 +58,12 @@ function AllBanks() {
   useEffect(() => {
     setLoading(true);
     setIsError(false)
+    setFilteredBanks([])
     setPageNumber(0);
 
     let data = localStorage.getItem(searchCity);
     if (data) {
       data = JSON.parse(data);
-      console.log(data.expiry, Date.now());
       if (data.expiry > Date.now()) {
         setBanks(data.banks);
         setFilteredBanks(data.banks);
@@ -80,7 +81,6 @@ function AllBanks() {
         return res.json();
       })
       .then(banks => {
-        console.log(banks);
         setBanks(banks);
         setFilteredBanks(banks);
         setLoading(false);
@@ -104,8 +104,6 @@ function AllBanks() {
 
   useEffect(() => {
     const requiredBanks = [];
-
-    console.log(filteredBanks);
     for (let i = pageNumber * pagePerEntries;i < pageNumber * pagePerEntries + pagePerEntries && i < filteredBanks.length; i++) {
       requiredBanks.push(filteredBanks[i]);
     }
@@ -115,6 +113,10 @@ function AllBanks() {
 
   const searchHandler2 = () => {
     let newFilteredBanks = [];
+    if(!searchCategory && queryInput){
+      setDisplayToastify(true)
+    }else setDisplayToastify(false)
+
     if (!searchCategory || !queryInput) {
       newFilteredBanks = banks.filter(bank => {
         return bank.city.toUpperCase().includes(searchCity.toUpperCase());
@@ -129,6 +131,7 @@ function AllBanks() {
     }
 
     setFilteredBanks(newFilteredBanks);
+    setPageNumber(0);
   };
 
   const fullDetailsHandler = ifsc => {
@@ -155,12 +158,11 @@ function AllBanks() {
 
   return (
     <div className="container_fluid">
-      <div className={classes.header}>
+     <div className={classes.header}>
         <h2>All banks</h2>
         <ul className={classes.dropdown}>
           <li>
             <Dropdown
-              label={"Choose city"}
               selected={searchCity}
               change={searchCityHandler}
               label="choose city"
@@ -169,8 +171,6 @@ function AllBanks() {
           </li>
           <li>
             <Dropdown
-              label={"Choose Category"}
-              selected={searchCategory}
               change={searchCategoryHandler}
               label="choose Category"
               options={categories}
@@ -180,13 +180,13 @@ function AllBanks() {
             <input
               onInput={event => setQueryInput(event.target.value)}
               placeholder="search"
-              style={{width  :"300px"}}
+              style={{width  :"300px",borderRadius:"5px",border:"none",padding:"2px 3px"}}
             ></input>
           </li>
         </ul>
       </div>
 
-        <Table headers={tableHeaders} fullDetailsHandler={fullDetailsHandler} currentPageBanks={currentPageBanks} />
+        <Table pageNumber={pageNumber} headers={tableHeaders} fullDetailsHandler={fullDetailsHandler} currentPageBanks={currentPageBanks} />
       <div>
         
         {loading ? (
