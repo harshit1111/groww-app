@@ -10,12 +10,18 @@ function Pagination(props){
 
 
     return(
-        <div className="mt-3 d-flex justify-content-center align-items-center">
-            
+        <div className={`${classes.pagination} mt-3 d-flex justify-content-center flex-column align-items-center`}>
+            <div>
+                Displaying {currentPageNumber + 1} of {props.totalPages + 1}
+            </div>
+            <div>
             <button disabled={!currentPageNumber} className={classes.button}  onClick={() => props.change(currentPageNumber-1)}>previous</button>
-            <span>{currentPageNumber + 1}</span>
             <button disabled={currentPageNumber == totalPages}  className={classes.button}    onClick={() => props.change(currentPageNumber+1)}>next</button>
+            </div>
+
+            
         </div>
+        
     )
 
 }

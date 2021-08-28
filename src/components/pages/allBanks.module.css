@@ -9,7 +9,7 @@
 
 .table{
     height: 80px;
-  overflow-y: auto;
+    width: 100%;
 }
 
 .table td { overflow: hidden; }
@@ -52,10 +52,7 @@
 }
 
 
-  .row{
-    
-  }
-
+  
   .row:hover{
       cursor: pointer;
       transition: all .1s;
@@ -67,7 +64,7 @@
 
   tr:nth-child(even) {background-color: #E7E9EB;}
 
-  tbody tr:hover{
+  .table tr:hover{
       background: #4CAF50;
       color: white;
   }

@@ -5,7 +5,7 @@ function dropDown(props){
     }
     return(
         <>
-            <select style={{width:"150px"}} defaultValue="jajaj" placeholder="jajaj" onChange={changeHandler}>
+            <select style={{width:"150px"}}  onChange={changeHandler}>
                 
                 {props.selected ? <option hidden selected>{props.selected.toUpperCase()}</option> :  <option hidden selected>{props.label.toUpperCase()}</option>}
                 {props.options.map(ele => {

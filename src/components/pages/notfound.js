@@ -1,6 +1,12 @@
+
+import NotFoundGif from '../../images/404.gif'
+
 function notFound(){
     return(
-        <h1>NOTHING HERE</h1>
+        <div style={{width:"50%"}}>
+            <img src={NotFoundGif}></img>
+        </div>
+        
     )
 }
 

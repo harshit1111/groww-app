@@ -2,14 +2,28 @@
 import {useEffect , useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import Loader from '../Loader/loader'
+import NotFound from './notfound'
 
 let cities = ["mumbai","delhi","pune"]
 
-function BankDetails(props){
+const objectMapping = {
+    bank_id : "BANK ID",
+    bank_name : "BANK NAME",
+    branch : "BRANCH",
+    ifsc : "IFSC",
+    address : "ADDRESS",
+    city : "CITY",
+    district : "DISTRICT",
+    state : "STATE"
+
+}
+
+function BankDetails(){
 
     const [selectedBankIfsc ,setSelectedBankIfsc] = useState();
     const [selectedBank,setSelectedBank] = useState({});
     const [loading,setLoading] = useState(false)
+    const [notFound , setNoFound] = useState(false);
     const history = useHistory();
 
    
@@ -24,24 +38,56 @@ function BankDetails(props){
     useEffect(() => {
         
         let selectedBank = null;
-        console.log(selectedBankIfsc)
 
         setLoading(true)
+        setNoFound(false)
 
+        console.log(history.location.state)
         if(history.location.state){
             let city = history.location.state;
             let cityData = JSON.parse(localStorage.getItem(city));
+
             if(cityData){
-                console.log(cityData)
-                selectedBank = cityData.banks.find((bank) => {
-                    return bank.ifsc === selectedBankIfsc
-                })
+                if(cityData.expiry > Date.now()){
+                    selectedBank = cityData.banks.find((bank) => {
+                        return bank.ifsc === selectedBankIfsc
+                    })
+                }else{
+                    setLoading(true)
+                    localStorage.removeItem(city);
+                    fetch(`https://vast-shore-74260.herokuapp.com/banks?city=${city.toUpperCase()}`)
+                    .then(res => {
+                        return res.json();
+                    })
+                    .then(banks => {
+                        const expiryTime = Date.now();
+                        
+                        const localStorageData = {
+                          banks: banks,
+                          expiry: expiryTime
+                        };
+                        
+                        selectedBank = banks.find((bank) => {
+                            console.log(bank , selectedBankIfsc)
+                            console.log(bank.ifsc === selectedBankIfsc)
+                            return bank.ifsc === selectedBankIfsc
+                        })
+                        
+                        console.log(selectedBank)
+                        if(selectedBank) setSelectedBank(selectedBank)
+                        setLoading(false)
+
+                        localStorage.setItem(`${city}`, JSON.stringify(localStorageData));
+                    })
+                }
+               
             }
             
         }else{
             
             for(let i = 0; i <cities.length ; i++){
                 let cityData = JSON.parse(localStorage.getItem(cities[i]));
+                console.log(cityData)
                 if(cityData){
                     selectedBank = cityData.banks.find((bank) => {
                         console.log(bank.ifsc == selectedBankIfsc)
@@ -53,8 +99,10 @@ function BankDetails(props){
             }
         }
         
-        if(selectedBank) setSelectedBank(selectedBank);
+
         console.log(selectedBank)
+        if(selectedBank) setSelectedBank(selectedBank);
+        else setNoFound(true)
         setLoading(false)
     },[selectedBankIfsc])
 
@@ -63,31 +111,25 @@ function BankDetails(props){
         <div className="container_fluid">
             <div className="row">
                 <div className="col-12">
-                    <h3>Selected Bank details</h3>
+                    <h3 className="p-3" style={{background:"#ddd",border:"1px solid #ddd",textAlign:"left"}}>Selected Bank details</h3>
                 </div>
 
             </div>
             <div className="row">
                 {loading ? <div className="text-center"><Loader /></div> : null}
-                {Object.keys(selectedBank).length == 0 && !loading ? <h2>NO BANK FOUND</h2>: null}
+                {Object.keys(selectedBank).length == 0 && notFound ? <NotFound />: null}
                 <tbody>
                 {Object.keys(selectedBank).map(ele => {
                     return(
                         <>
                         <tr>
                             <td>
-                                {ele}
+                                {objectMapping[ele]}
                             </td>
                             <td>
-                            {selectedBank[ele]}
+                                {selectedBank[ele]}
                             </td>
                         </tr>
-                        {/* <div className="col-6">
-                            {ele}
-                        </div>
-                        <div className="col-6">
-                            {selectedBank[ele]}
-                        </div> */}
                         </>
                     )
                 })}

@@ -8,9 +8,6 @@ function Sidebar(){
                 <li>    
                 <Link to="/">All Banks</Link>
                 </li>
-                <li>    
-                <Link to="/favourites">favourites</Link>
-                </li>
             </ul>
             
            

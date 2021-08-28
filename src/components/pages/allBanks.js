@@ -5,6 +5,7 @@ import Loader from "../Loader/loader";
 import { useHistory } from "react-router-dom";
 import Pagination from "../Pagination/pagination";
 import { useSelector, useDispatch } from "react-redux";
+import Table from '../table/table'
 
 
 const cities = [
@@ -21,7 +22,15 @@ const categories = [
   { name: "address", value: "address" }
 ];
 
-function AllBanks(props) {
+const tableHeaders = [
+  {width:"10%" , content : "BANK ID"},
+  {width:"20%" , content : "BANK NAME"},
+  {width:"10%" , content : "IFSC"},
+  {width:"15%" , content : "BRANCH"},
+  {width:"30%" , content : "ADDRESS"}
+]
+
+function AllBanks() {
   const dispatch = useDispatch();
   const searchCity = useSelector(state => state.city);
   const [banks, setBanks] = useState([]);
@@ -38,7 +47,6 @@ function AllBanks(props) {
   const history = useHistory();
 
   const searchCityHandler = city => {
-    console.log("???????????");
     dispatch({ type: "change", city: city });
   };
 
@@ -62,7 +70,7 @@ function AllBanks(props) {
         return;
       }
 
-      localStorage.clear();
+      localStorage.removeItem(searchCity);
     }
 
     fetch(
@@ -77,17 +85,18 @@ function AllBanks(props) {
         setFilteredBanks(banks);
         setLoading(false);
 
-        const expiytTime = Date.now() + 1000 * 60 * 60 * 24 * 3;
+        const expiryTime = Date.now() + 1000*60*60*24*3;
 
         const localStorageData = {
           banks: banks,
-          expiry: expiytTime
+          expiry: expiryTime
         };
 
         localStorage.setItem(`${searchCity}`, JSON.stringify(localStorageData));
       })
       .catch(err => {
         console.log("something went wrong");
+        console.log(err)
         setIsError(true);
         setLoading(false);
       });
@@ -106,17 +115,15 @@ function AllBanks(props) {
 
   const searchHandler2 = () => {
     let newFilteredBanks = [];
-    console.log(searchCity, searchCategory, queryInput);
     if (!searchCategory || !queryInput) {
       newFilteredBanks = banks.filter(bank => {
         return bank.city.toUpperCase().includes(searchCity.toUpperCase());
       });
     } else {
       newFilteredBanks = banks.filter(bank => {
-        console.log(bank.city , searchCity , searchCategory , queryInput)
         return (
           bank.city.toUpperCase().includes(searchCity.toUpperCase()) &&
-          bank[searchCategory].toUpperCase().includes(queryInput.toUpperCase())
+          bank[searchCategory.toLowerCase()].toUpperCase().includes(queryInput.toUpperCase())
         );
       });
     }
@@ -143,7 +150,7 @@ function AllBanks(props) {
   };
 
   useEffect(() => {
-    setTotalPages(filteredBanks.length / pagePerEntries - 1);
+    setTotalPages(Math.ceil(filteredBanks.length / pagePerEntries - 1));
   }, [filteredBanks]);
 
   return (
@@ -178,36 +185,10 @@ function AllBanks(props) {
           </li>
         </ul>
       </div>
-      <div>
-        <table className={classes.table}>
-          <thead>
-            <tr>
-              <th width="10%">ID</th>
-              <th width="20%">Branch Name</th>
-              <th width="15%">IFSC</th>
-              <th width="15%">NAME</th>
-              <th width="30%">address</th>
-            </tr>
-          </thead>
 
-          <tbody>
-            {currentPageBanks.map((bank, id) => {
-              return (
-                <tr
-                  className={classes.row}
-                  key={id}
-                  onClick={fullDetailsHandler.bind(this, bank.ifsc)}
-                >
-                  <td>{bank.bank_id}</td>
-                  <td> {bank.bank_name}</td>
-                  <td>{bank.ifsc}</td>
-                  <td>{bank.branch}</td>
-                  <td className={classes.text}>{bank.address}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        <Table headers={tableHeaders} fullDetailsHandler={fullDetailsHandler} currentPageBanks={currentPageBanks} />
+      <div>
+        
         {loading ? (
           <div className="text-center">
             <Loader />{" "}
