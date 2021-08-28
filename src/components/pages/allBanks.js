@@ -113,9 +113,7 @@ function AllBanks() {
 
   const searchHandler2 = () => {
     let newFilteredBanks = [];
-    if(!searchCategory && queryInput){
-      setDisplayToastify(true)
-    }else setDisplayToastify(false)
+
 
     if (!searchCategory || !queryInput) {
       newFilteredBanks = banks.filter(bank => {
