@@ -43,7 +43,7 @@ function AllBanks() {
   const [pagePerEntries, setPagePerEntries] = useState(10);
   const [totalPages, setTotalPages] = useState();
   const [isError, setIsError] = useState(false);
-  const [displayToastify , setDisplayToastify] = useState(false)
+
 
   const history = useHistory();
 
