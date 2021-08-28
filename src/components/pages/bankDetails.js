@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import Loader from "../Loader/loader";
 import NotFound from "./notfound";
 
-let cities = ["mumbai", "delhi", "pune"];
+let cities = ["mumbai", "delhi", "pune","kolkata","chennai"];
 
 const objectMapping = {
   bank_id: "BANK ID",
@@ -86,7 +86,7 @@ function BankDetails() {
         if (selectedBank) break;
       }
     }
-    
+
     if (selectedBank) setSelectedBank(selectedBank);
     else setNoFound(true);
     setLoading(false);
